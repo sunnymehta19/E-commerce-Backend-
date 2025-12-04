@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        /* remove number arrows */
+        #mobileNumber::-webkit-inner-spin-button,
+        #mobileNumber::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        #mobileNumber {
+            -moz-appearance: textfield;
+        }
+    </style>
+
+    <title>Create Account</title>
+</head>
+
+<body>
+    <div class="bg-[#f1f1f1] w-full h-screen flex justify-center items-center">
+        <div class="w-[350px] bg-white rounded-xl p-5 shadow-md">
+            <form action="/create" method="post">
+                <div class="text-center text-2xl font-bold mb-6 mt-2">Create Account</div>
+
+                <div class="flex flex-col">
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3 capitalize"
+                        type="text" placeholder="Enter Full Name" name="username" required>
+
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3"
+                        type="number" placeholder="Enter Mobile Number +91" id="mobileNumber" name="contact"
+                        required>
+
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3"
+                        type="text" placeholder="Enter Email" name="email" required>
+
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-4"
+                        type="password" placeholder="Enter Password" name="password" required>
+
+                    <button
+                        class="bg-amber-600 rounded-lg py-3 text-white font-bold text-lg hover:bg-amber-700 transition">
+                        Create
+                    </button>
+                </div>
+
+                <div class="flex justify-center gap-2 text-sm mt-3">
+                    <p>Already have an account?</p>
+                    <a class="text-blue-800 hover:underline" href="/login">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

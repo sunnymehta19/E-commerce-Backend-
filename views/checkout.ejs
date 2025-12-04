@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Checkout</title>
+</head>
+
+<body class="bg-[#f1f1f1]">
+    <nav class="bg-white shadow-md px-6 py-4 text-2xl font-bold">
+        <a href="/">BagStore</a>
+    </nav>
+
+    <div class="p-6 md:p-12 max-w-xl mx-auto">
+        <h2 class="text-3xl font-bold mb-6">Checkout</h2>
+
+        <div class="bg-white shadow p-6 rounded-lg">
+
+            <form action="/checkout" method="post" class="space-y-4">
+
+                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="text"
+                    placeholder="Full Name" name="fullname" required>
+
+                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="text"
+                    placeholder="Address" name="address" required>
+
+                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="text"
+                    placeholder="City" name="city" required>
+
+                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="number"
+                    placeholder="Pincode" name="pincode" required>
+
+                <button class="bg-amber-600 w-full py-3 rounded-lg text-white font-bold hover:bg-amber-700">
+                    Place Order
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

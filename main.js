@@ -21,34 +21,8 @@ app.use("/owner", ownerRouter);
 app.use("/user", userRouter);
 app.use("/product", productRouter);
 
-
-
-app.get("/account", (req, res) => {
-    res.render("createAccount");
-
-})
-
-app.get("/login", (req, res) => {
-    res.render("login");
-
-})
-
-app.get("/cart", (req, res) => {
-    res.render("cart");
-
-})
-
-app.post("/create", async (req, res) => {
-    let {username, email, password, contact} = req.body;
-    let user = await userModel.create({
-        username,
-        contact,
-        password,
-        email,
-    })
-
-    res.send(user)
-
+app.get("/", (req, res) => {
+    res.send("this is main")
 })
 
 app.listen(port, () => {

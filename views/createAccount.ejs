@@ -24,29 +24,37 @@
 
 <body>
     <div class="bg-[#f1f1f1] w-full h-screen flex justify-center items-center flex-col">
-        <div class="mb-7 text-2xl font-bold select-none ">Welcome to <span class="text-3xl text-amber-600">BagVerse</span></div>
+        <div class="mb-7 text-2xl font-bold select-none ">Welcome to <span
+                class="text-3xl text-amber-600">BagVerse</span></div>
         <div class="w-[350px]  bg-white rounded-xl px-5 py-3 shadow-md">
-            <form action="/create" method="post">
+            <form action="/user/register" method="post">
                 <div class="text-center text-xl font-bold mb-4 mt-1">Create Account</div>
 
                 <div class="flex flex-col">
-                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3 capitalize"
-                        type="text" placeholder="Enter Full Name" name="username" required>
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3 capitalize" type="text"
+                        placeholder="Enter Full Name" name="username" required>
 
-                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3"
-                        type="number" placeholder="Enter Mobile Number +91" id="mobileNumber" name="contact"
-                        required>
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3" type="number"
+                        placeholder="Enter Mobile Number +91" id="mobileNumber" name="contact" required>
 
-                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3"
-                        type="text" placeholder="Enter Email" name="email" required>
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-3" type="text"
+                        placeholder="Enter Email" name="email" required>
 
-                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-4"
-                        type="password" placeholder="Enter Password" name="password" required>
+                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-3 mb-4" type="password"
+                        placeholder="Enter Password" name="password" required>
 
-                    <button
-                        class="bg-amber-600 rounded-lg py-3 text-white font-bold text-lg hover:bg-amber-700 transition">
-                        Create
-                    </button>
+                    <% if (error.length> 0) { %>
+                        <div
+                            class="flash-msg flex items-center justify-between bg-red-100 border-l-4 border-red-500 text-red-800 px-4 py-3 rounded-md shadow-md animate-slideDown mb-2">
+                            <span>
+                                <%= error %>
+                            </span>
+                        </div>
+                        <% } %>
+
+                            <input
+                                class="bg-amber-600 rounded-lg py-3 text-white font-bold text-lg hover:bg-amber-700 transition"
+                                type="submit" value="Create">
                 </div>
 
                 <div class="flex justify-center gap-2 text-sm mt-3">

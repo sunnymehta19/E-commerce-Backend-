@@ -5,60 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <title>BagVerse | Shop</title>
 </head>
 
-<body>
+<body class="bg-gray-50 pt-[50px]">
 
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex items-center gap-2">
-                <h3>sort by</h3>
-                <form action="/shop">
-                    <select class="border-[1px] px-2 py-1" name="sortby" id="">
-                        <option value="popular">Popular</option>
-                        <option value="newest">Newest</option>
-                    </select>
-                </form>
-            </div>
-            <div class="flex flex-col mt-20">
-                <a class="block w-fit mb-2" href="">New Collection</a>
-                <a class="block w-fit mb-2" href="">All Products</a>
-                <a class="block w-fit mb-2" href="">Discounted Products</a>
-            </div>
-            <div class="mt-32">
-                <a class="block w-fit mb-2" href="">Filter by :</a>
-                <a class="block w-fit mb-2" href="">Availability</a>
-                <a class="block w-fit mb-2" href="">Discount</a>
-            </div>
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 z-50 w-full bg-white shadow-sm h-[70px] py-5 px-10 flex items-center justify-between">
+        <h1 class="text-3xl font-bold tracking-wide text-gray-800">BagVerse</h1>
+
+        <div class="flex items-center gap-6">
+            <a href="/shop" class="text-gray-600 hover:text-black">Home</a>
+            <a href="/cart" class="text-gray-600 hover:text-black">
+                <i class="ri-shopping-cart-line text-xl"></i>
+            </a>
+            <a href="/" class=" bg-red-600 rounded-lg px-3 py-2 text-white transform hover:scale-102">Logout</a>
         </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
-            <div class="flex items-start gap-5">
-                <% products.forEach(function(product){ %>
-                    <div class="w-60">
-                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
-                            <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
-                                alt="">
-                        </div>
+    </nav>
+
+    <!-- PAGE LAYOUT -->
+    <div class="flex px-10 py-10 gap-10">
+
+        <!-- SIDEBAR -->
+        <aside class="w-64 bg-white shadow rounded-lg p-6 h-fit sticky top-5">
+
+            <h3 class="text-lg font-semibold mb-4 text-gray-700">Sort By</h3>
+            <form action="/shop" method="GET">
+                <select name="sortby"
+                    class="w-full border rounded-lg px-3 py-2 bg-gray-100 focus:bg-white focus:ring-2 focus:ring-black">
+                    <option value="popular">Popular</option>
+                    <option value="newest">Newest</option>
+                    <option value="lowtohigh">Price: Low to High</option>
+                    <option value="hightolow">Price: High to Low</option>
+                </select>
+            </form>
+
+            <h3 class="text-lg font-semibold mt-8 mb-4 text-gray-700">Categories</h3>
+            <div class="flex flex-col gap-2">
+                <a class="hover:text-black text-gray-600" href="">New Collection</a>
+                <a class="hover:text-black text-gray-600" href="">All Products</a>
+                <a class="hover:text-black text-gray-600" href="">Discounts</a>
+            </div>
+
+            <h3 class="text-lg font-semibold mt-8 mb-4 text-gray-700">Filters</h3>
+            <div class="flex flex-col gap-2">
+                <a class="hover:text-black text-gray-600" href="">Availability</a>
+                <a class="hover:text-black text-gray-600" href="">Discount Range</a>
+            </div>
+
+        </aside>
+
+
+        <!-- PRODUCTS GRID -->
+        <main class="flex-1">
+
+            <h2 class="text-2xl font-bold mb-6 text-gray-700">Shop All Bags</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                
+
+                <% products.forEach(product =>{ %>
+                    <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">
+
+                        <!-- IMAGE SECTION -->
                         <div
-                            class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
-                            <div>
-                                <h3>
-                                    <%= product.name %>
-                                </h3>
-                                <h4>₹ <%= product.price %>
-                                </h4>
-                            </div>
-                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                                <i class="ri-add-line"></i>
-                            </a>
+                            class="w-full h-56 rounded-lg flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                            <img class="h-44 object-contain"
+                                src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+                                alt="<%= product.name %>">
                         </div>
+
+                        <!-- DETAILS -->
+                        <div class="mt-4">
+                            <h3 class="text-lg font-semibold text-gray-800">
+                                <%= product.name %>
+                            </h3>
+
+                            <p class="text-gray-600 mt-1 font-medium">
+                                ₹ <%= product.price %>
+                            </p>
+                        </div>
+
+                        <!-- ADD TO CART BUTTON -->
+                        <a href="/add-to-cart/<%= product._id %>"
+                            class="mt-4 w-full flex items-center justify-center gap-2 bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition">
+                            <i class="ri-shopping-bag-line"></i> Add to Cart
+                        </a>
+
                     </div>
                     <% }) %>
 
-                    
             </div>
-        </div>
+        </main>
+
     </div>
 
 </body>

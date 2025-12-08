@@ -10,8 +10,8 @@ if (process.env.NODE_ENV === "development") {
         if (owners.length > 0) {
             return res.status(503).send("Service Unavailable! Already have owner")
         }
-        else{
-            let {username, email, password} = req.body;
+        else {
+            let { username, email, password } = req.body;
             let createdOwner = await ownerModel.create({
                 username,
                 email,
@@ -23,8 +23,9 @@ if (process.env.NODE_ENV === "development") {
 }
 
 
-router.get("/", (req, res) => {
-    res.send("I am ownerRouter");
+router.get("/admin", (req, res) => {
+    let success = req.flash("success")
+    res.render("createProduct", { success });
 });
 
 

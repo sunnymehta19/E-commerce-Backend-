@@ -51,7 +51,7 @@ const loginUser = async (req, res) => {
             if (result) {
                 let token = generateToken(user);
                 res.cookie("token", token);
-                // return res.status(200).send("You can login")
+                // return res.status(200).send("You can login");
                 return res.redirect("/shop");
 
             } else {
@@ -62,7 +62,13 @@ const loginUser = async (req, res) => {
     }
 }
 
+const logOut = (req, res) => {
+    res.cookie("token", "");
+    res.redirect("/")
+}
 
+
+module.exports.logOut = logOut;
 module.exports.loginUser = loginUser;
 module.exports.registerUser = registerUser;
 

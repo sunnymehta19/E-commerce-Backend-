@@ -19,4 +19,6 @@ router.get("/shop", isLoggedIn, async (req, res) => {
     res.render("shop", { products });
 })
 
+
+
 module.exports = router;

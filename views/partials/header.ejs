@@ -1,0 +1,41 @@
+<nav class="fixed top-0 z-50 w-full bg-white shadow-sm h-[70px] py-5 px-10 flex items-center justify-between">
+    <h1 class="text-3xl font-bold tracking-wide text-gray-800 select-none">BagVerse</h1>
+
+    <div class="flex items-center gap-6">
+        <a href="/shop" class="text-gray-600 hover:text-black">Home</a>
+        <a href="/cart" class="text-gray-600 hover:text-black">Cart</a>
+        <a href="/account" class="text-gray-600 hover:text-black">My Account</a>
+        <a href="/orders" class="text-gray-600 hover:text-black">Orders</a>
+        <a href="/user/logout"
+           onclick="return showLogoutPopup(event)"
+           class="bg-red-600 rounded-lg px-3 py-2 text-white transform hover:scale-102">
+           Logout
+        </a>
+    </div>
+</nav>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function showLogoutPopup(event) {
+    event.preventDefault();
+
+    Swal.fire({
+        title: "Logout Confirmation",
+        text: "Are you sure you want to logout?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Logout",
+        cancelButtonText: "Cancel",
+        backdrop: `rgba(0,0,0,0.4)`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/user/logout"; 
+        }
+    });
+}
+</script>
+

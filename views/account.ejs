@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <title>My Account | BagVerse</title>
+</head>
+
+<body class="bg-gray-100 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+        <div class="max-w-4xl mx-auto px-6 pb-20">
+
+            <h1 class="text-3xl font-bold mb-6">My Account</h1>
+
+            <!-- PROFILE CARD -->
+            <div class="bg-white shadow-lg rounded-xl p-8 flex items-center gap-8">
+
+                <!-- DETAILS -->
+                <div class="flex-1">
+                    <h2 class="text-2xl font-bold text-gray-800 capitalize">
+                        <%= user.username %>
+                    </h2>
+
+                    <p class="text-gray-600 mt-2">
+                        <i class="ri-mail-line"></i>
+                        <%= user.email %>
+                    </p>
+
+                    <p class="text-gray-600 mt-1">
+                        <i class="ri-phone-line"></i>
+                        <%= user.contact || "Not added" %>
+                    </p>
+
+                    <p class="text-gray-600 mt-1">
+                        <i class="ri-map-pin-line"></i>
+                        <%= user.address || "No address saved" %>
+                    </p>
+
+                    <div class="mt-4 flex gap-4">
+                        <a href="/edit-profile" class="px-5 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                            Edit Profile
+                        </a>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+
+                <!-- Cart Count -->
+                <div class="bg-white shadow rounded-xl p-6 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-black flex items-center justify-center">
+                        <i class="ri-shopping-cart-line text-white text-3xl"></i>
+                    </div>
+
+                    <div>
+                        <p class="text-gray-600">Items in Cart</p>
+                        <h3 class="text-2xl font-bold">
+                            <%= user.cart.length %>
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Order Count -->
+                <div class="bg-white shadow rounded-xl p-6 flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-xl bg-amber-600 flex items-center justify-center">
+                        <i class="ri-shopping-bag-3-fill text-white text-3xl"></i>
+                    </div>
+
+                    <div>
+                        <p class="text-gray-600">Orders Placed</p>
+                        <h3 class="text-2xl font-bold">
+                            <%= user.order.length %>
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Address Section -->
+            <div class="bg-white shadow rounded-xl p-6 mt-10">
+                <h3 class="text-xl font-semibold mb-4">Shipping Address</h3>
+
+                <% if (user.address) { %>
+                    <p class="text-gray-700">
+                        <%= user.address %>
+                    </p>
+                    <a href="/edit-address" class="text-blue-600 mt-3 inline-block hover:underline">
+                        Edit Address
+                    </a>
+                    <% } else { %>
+                        <p class="text-gray-500">No address added.</p>
+                        <a href="/edit-address" class="text-blue-600 mt-3 inline-block hover:underline">
+                            Add Address
+                        </a>
+                        <% } %>
+            </div>
+
+
+        </div>
+</body>
+
+</html>

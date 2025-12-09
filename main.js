@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 const ownerRouter = require("./routes/ownerRouter");
 const userRouter = require("./routes/userRouter");
 const productRouter = require("./routes/productRouter");
+const cartRouter = require("./routes/cartRouter");
 const index = require("./routes/index");
 
 require("dotenv").config()
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/owner", ownerRouter);
 app.use("/user", userRouter);
 app.use("/product", productRouter);
+app.use("/cart", cartRouter);
 app.use("/", index)
 
 

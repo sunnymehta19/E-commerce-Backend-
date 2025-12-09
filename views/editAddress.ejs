@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <title>Edit Address</title>
+</head>
+
+<body class="bg-gray-100 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
+
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Edit Address</h2>
+
+        <form action="/edit-address" method="POST" class="space-y-6">
+
+            <div>
+                <label class="block text-gray-600 font-medium mb-2">Address</label>
+                <textarea name="address"
+                    class="w-full p-4 border rounded-lg shadow focus:ring-2 focus:ring-black outline-none"
+                    rows="4"
+                    placeholder="Enter your complete address"><%= user.address || "" %></textarea>
+            </div>
+
+            <button
+                class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-all">
+                Save Changes
+            </button>
+
+        </form>
+
+        <a href="/account" class="block text-center mt-4 text-gray-600 hover:underline">
+            Cancel
+        </a>
+
+    </div>
+
+</body>
+
+</html>

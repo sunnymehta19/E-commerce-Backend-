@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <title>Payment</title>
+</head>
+
+<body class="bg-gray-50 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+    <div class="max-w-6xl mx-auto px-6 pb-10">
+
+        <h2 class="text-3xl font-bold mb-6">Payment</h2>
+
+        <div class="flex flex-col lg:flex-row gap-10">
+
+            <!-- LEFT SIDE -->
+            <div class="flex-1 space-y-10">
+
+                <!-- DELIVERY ADDRESS -->
+                <div class="bg-white p-6 rounded-xl shadow">
+                    <h3 class="text-xl font-semibold mb-2 flex items-center gap-2">
+                        <i class="ri-map-pin-line text-2xl"></i>
+                        Delivery Address
+                    </h3>
+
+                    <% if (user.address) { %>
+                    <p class="text-gray-700"><%= user.address %></p>
+                    <% } else { %>
+                    <p class="text-gray-500">No address added.</p>
+                    <% } %>
+                </div>
+
+                <!-- PAYMENT OPTIONS -->
+                <div class="bg-white p-6 rounded-xl shadow">
+                    <h3 class="text-xl font-semibold mb-4">Choose Payment Method</h3>
+
+                    <div class="space-y-4">
+
+                        <!-- UPI -->
+                        <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl cursor-pointer border hover:border-black transition">
+                            <input type="radio" name="payment_method" value="UPI" class="h-5 w-5">
+                            <span class="text-lg font-medium">UPI (Google Pay, PhonePe, Paytm)</span>
+                        </label>
+
+                        <!-- Card -->
+                        <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl cursor-pointer border hover:border-black transition">
+                            <input type="radio" name="payment_method" value="Card" class="h-5 w-5">
+                            <span class="text-lg font-medium">Credit / Debit Card</span>
+                        </label>
+
+                        <!-- COD -->
+                        <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl cursor-pointer border hover:border-black transition">
+                            <input type="radio" name="payment_method" value="COD" class="h-5 w-5">
+                            <span class="text-lg font-medium">Cash On Delivery</span>
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE – ORDER SUMMARY -->
+            <div class="w-full lg:w-[360px]">
+
+                <div class="bg-white p-6 rounded-xl shadow sticky top-[100px]">
+
+                    <h3 class="text-xl font-bold mb-4">Order Summary</h3>
+
+                    <% let subtotal = 0;
+                       user.cart.forEach(i => subtotal += i.product.price * i.quantity);
+                    %>
+
+                    <div class="text-lg font-medium flex justify-between">
+                        <span>Subtotal</span>
+                        <span>₹ <%= subtotal %></span>
+                    </div>
+
+                    <div class="text-lg font-medium flex justify-between mt-2">
+                        <span>Platform Fee</span>
+                        <span>₹ 20</span>
+                    </div>
+
+                    <div class="text-lg font-medium flex justify-between border-b pb-2 mt-2">
+                        <span>Shipping Fee</span>
+                        <span>₹ 0</span>
+                    </div>
+
+                    <div class="text-xl font-bold flex justify-between mt-2">
+                        <span>Total</span>
+                        <span>₹ <%= subtotal + 20 %></span>
+                    </div>
+
+                    <!-- FINAL PAY BUTTON -->
+                    <form action="/place-order" method="POST" id="paymentForm">
+                        <input type="hidden" name="payment_method" id="selectedMethod">
+
+                        <button
+                            type="submit"
+                            class="w-full bg-black text-white py-3 rounded-lg mt-6 font-semibold hover:bg-gray-800">
+                            Pay Now
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Select payment method
+        document.querySelectorAll('input[name="payment_method"]').forEach(option => {
+            option.addEventListener("change", () => {
+                document.getElementById("selectedMethod").value = option.value;
+            });
+        });
+
+        // Block submission without choosing payment
+        document.getElementById("paymentForm").addEventListener("submit", (e) => {
+            if (!document.getElementById("selectedMethod").value) {
+                e.preventDefault();
+                alert("Please select a payment method");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

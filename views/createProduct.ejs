@@ -20,19 +20,10 @@
     </div>
     <% } %>
 
-    <nav class="w-full bg-white h-[70px] shadow-sm py-5 px-10 flex items-center justify-between">
-        <h1 class="text-3xl font-bold tracking-wide text-gray-800">BagVerse</h1>
+    <%- include("partials/header") %>
 
-        <div class="flex items-center gap-6">
-            <a href="/shop" class="text-gray-600 hover:text-black">Home</a>
-            <a href="/cart" class="text-gray-600 hover:text-black">
-                <i class="ri-shopping-cart-line text-xl"></i>
-            </a>
-            <a href="/" class=" bg-red-600 rounded-lg px-3 py-2 text-white transform hover:scale-102">Logout</a>
-        </div>
-    </nav>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col mt-16">
         <div class="container px-10 py-10 flex flex-grow">
             <div class="w-[25%] flex flex-col items-start">
                 <div class="flex flex-col">

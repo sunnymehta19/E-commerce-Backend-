@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
     try {
-        let { username, email, password, contact } = req.body;
+        let { username, email, password, contact, address } = req.body;
         let user = await userModel.findOne({ email: email })
         if (user) {
             // return res.status(401).send("You already have an account, Please Login.")
@@ -23,7 +23,8 @@ const registerUser = async (req, res) => {
                         username,
                         email,
                         password: hash,
-                        contact
+                        contact,
+                        address
                     });
 
                     let token = generateToken(newUser)

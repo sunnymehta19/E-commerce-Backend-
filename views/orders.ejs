@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <title>My Orders</title>
+</head>
+
+<body class="bg-gray-50 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+    <div class="max-w-5xl mx-auto px-6 py-10">
+
+        <h2 class="text-3xl font-bold mb-6">My Orders</h2>
+
+        <% if (!user.order || user.order.length === 0) { %>
+
+            <!-- Empty Orders -->
+            <div class="bg-white p-10 rounded-xl shadow text-center">
+                <i class="ri-shopping-bag-line text-6xl text-gray-400"></i>
+                <h3 class="text-xl font-semibold mt-4">No Orders Yet</h3>
+                <a href="/shop" class="mt-4 inline-block bg-black text-white px-6 py-3 rounded-lg">
+                    Start Shopping
+                </a>
+            </div>
+
+        <% } else { %>
+
+            <!-- ORDER LIST -->
+            <div class="space-y-6">
+
+                <% user.order.forEach(o => { %>
+                <div class="bg-white rounded-xl shadow p-6">
+
+                    <!-- ORDER HEADER -->
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h3 class="font-semibold text-lg">Order ID: <%= o._id %></h3>
+
+                        <span class="
+                            px-3 py-1 rounded-full text-sm font-semibold
+                            <% if (o.status === 'Delivered') { %> bg-green-100 text-green-700
+                            <% } else if (o.status === 'Shipped') { %> bg-blue-100 text-blue-700
+                            <% } else { %> bg-yellow-100 text-yellow-700 <% } %>
+                        ">
+                            <%= o.status || "Processing" %>
+                        </span>
+                    </div>
+
+                    <!-- ORDER ITEM -->
+                    <div class="flex items-center gap-5 mt-4">
+
+                        <!-- IMAGE -->
+                        <div class="w-28 h-28 bg-gray-100 rounded flex items-center justify-center">
+                            <img src="data:image/jpeg;base64,<%= o.product.image.toString('base64') %>"
+                                class="h-20 object-contain" />
+                        </div>
+
+                        <!-- DETAILS -->
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold"><%= o.product.name %></h3>
+
+                            <p class="text-gray-600">
+                                Price: ₹ <%= o.product.price %>
+                            </p>
+
+                            <p class="text-gray-600">
+                                Quantity: <%= o.quantity %>
+                            </p>
+
+                            <p class="text-gray-500 text-sm mt-2">
+                                Ordered on
+                                <%= new Date(o.date).toLocaleDateString() %>
+                            </p>
+                        </div>
+
+                        <!-- REORDER BUTTON -->
+                        <a href="/addtocart/<%= o.product._id %>"
+                            class="px-5 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
+                            Reorder
+                        </a>
+
+                    </div>
+
+                </div>
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+</body>
+
+</html>

@@ -5,42 +5,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
     <title>Checkout</title>
 </head>
 
-<body class="bg-[#f1f1f1]">
-    <nav class="bg-white shadow-md px-6 py-4 text-2xl font-bold">
-        <a href="/">BagStore</a>
-    </nav>
+<body class="bg-gray-50 pt-[90px]">
 
-    <div class="p-6 md:p-12 max-w-xl mx-auto">
-        <h2 class="text-3xl font-bold mb-6">Checkout</h2>
+    <%- include("partials/header") %>
 
-        <div class="bg-white shadow p-6 rounded-lg">
+        <div class="max-w-6xl mx-auto px-6 py-8">
 
-            <form action="/checkout" method="post" class="space-y-4">
+            <h2 class="text-3xl font-bold mb-6">Checkout</h2>
 
-                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="text"
-                    placeholder="Full Name" name="fullname" required>
+            <div class="flex flex-col lg:flex-row gap-8">
 
-                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="text"
-                    placeholder="Address" name="address" required>
+                <!-- LEFT SIDE -->
+                <div class="flex-1 space-y-8">
 
-                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="text"
-                    placeholder="City" name="city" required>
+                    <!-- DELIVERY ADDRESS -->
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                            <i class="ri-map-pin-line text-2xl"></i>
+                            Delivery Address
+                        </h3>
 
-                <input class="w-full bg-[#f1f1f1] px-4 py-3 rounded-lg outline-none" type="number"
-                    placeholder="Pincode" name="pincode" required>
+                        <% if (user.address) { %>
+                            <p class="text-gray-700 mb-2">
+                                <%= user.address %>
+                            </p>
+                            <a href="/edit-address" class="text-blue-600 hover:underline">
+                                Change Address
+                            </a>
+                            <% } else { %>
+                                <p class="text-gray-500">No address added.</p>
+                                <a href="/edit-address" class="text-blue-600 hover:underline">
+                                    Add Address
+                                </a>
+                                <% } %>
+                    </div>
 
-                <button class="bg-amber-600 w-full py-3 rounded-lg text-white font-bold hover:bg-amber-700">
-                    Place Order
-                </button>
+                    <!-- ORDERED ITEMS -->
+                    <div class="bg-white rounded-xl shadow p-6">
+                        <h3 class="text-xl font-semibold mb-4">Your Items</h3>
 
-            </form>
+                        <div class="space-y-5">
+                            <% user.cart.forEach(item=> { %>
+                                <div class="flex items-center gap-5 border-b pb-4">
 
+                                    <div class="w-24 h-24 bg-gray-100 flex items-center justify-center rounded">
+                                        <img src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
+                                            class="h-16 object-contain" />
+                                    </div>
+
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-lg">
+                                            <%= item.product.name %>
+                                        </h4>
+
+                                        <p class="text-gray-600">₹ <%= item.product.price %>
+                                        </p>
+
+                                        <p class="text-gray-500">Qty: <%= item.quantity %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <% }) %>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT SIDE - SUMMARY -->
+                <div class="w-full lg:w-[360px]">
+
+                    <div class="bg-white rounded-xl shadow p-6 sticky top-[100px]">
+
+                        <h3 class="text-xl font-bold mb-4">Order Summary</h3>
+
+                        <% let subtotal=0; user.cart.forEach(i=> subtotal += i.product.price * i.quantity);
+                            %>
+
+                            <!-- PRICE BREAKDOWN -->
+                            <div class="text-lg font-medium flex justify-between">
+                                <span>Subtotal</span>
+                                <span>₹ <%= subtotal %></span>
+                            </div>
+
+                            <div class="text-lg font-medium flex justify-between mt-2">
+                                <span>Platform Fee</span>
+                                <span>₹ 20</span>
+                            </div>
+
+                            <div class="text-lg font-medium flex justify-between border-b pb-2 mt-2">
+                                <span>Shipping Fee</span>
+                                <span>₹ 0</span>
+                            </div>
+
+                            <div class="text-xl font-bold flex justify-between mt-2">
+                                <span>Total</span>
+                                <span>₹ <%= subtotal + 20 %></span>
+                            </div>
+
+                            <!-- DELIVERY DATE -->
+                            <div class="mt-4  bg-green-50 text-green-700 p-3 rounded-lg flex items-center gap-2">
+                                <i class="ri-calendar-check-line text-xl"></i>
+                                Estimated Delivery:
+                                <strong>
+                                    <%= new Date(Date.now() + 3*24*60*60*1000).toLocaleDateString() %>
+                                </strong>
+                            </div>
+
+                            <!-- PLACE ORDER -->
+                            <form action="/place-order" method="POST">
+                                <div class="w-full text-center bg-black text-white py-3 rounded-lg mt-3 font-semibold hover:bg-gray-800">
+                                <a  href="/payment">Place Order</a>
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
 </body>
 
 </html>

@@ -6,29 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
-
     <title>BagVerse | Shop</title>
-</head> 
+    <style>
+        @keyframes slideFade {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%, -10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(-50%, 0);
+            }
+        }
+
+        .flash-success {
+            animation: slideFade 0.3s ease-out;
+        }
+    </style>
+</head>
 
 <body class="bg-gray-50 pt-[90px]">
 
-    <!-- NAVBAR -->
     <%- include("partials/header") %>
 
-        <!-- PAGE LAYOUT -->
-        <div class="flex px-10 pb-10 gap-10">
+        <div class="flex flex-col lg:flex-row px-4 md:px-8 lg:px-10 pb-10 gap-6 lg:gap-10">
+
+            <!-- Mobile Filters Button -->
+            <button onclick="toggleFilters()" class="lg:hidden bg-black text-white px-4 py-2 rounded-md w-fit">
+                Filters <i class="ri-filter-3-line"></i>
+            </button>
+
             <% if (success && success.length> 0) { %>
-                <div class="flash-success fixed top-18 left-1/2 -translate-x-1/2 
-        w-1/4 bg-green-100 border-l-4 border-green-500 text-green-800 
-        px-4 py-3 rounded-md shadow-md animate-slideDown z-50">
-                    <span>
-                        <%= success %>
+                <div class="flash-success fixed 
+    top-[80px] left-1/2 -translate-x-1/2 
+    w-[90%] sm:w-[70%] md:w-[40%] lg:w-[25%]
+    bg-green-100 border-l-4 border-green-500 text-green-800 
+    px-4 py-3 rounded-md shadow-md z-50 text-center">
+
+                    <span class="block text-sm sm:text-base font-medium">
+                        <%= success[0] %>
                     </span>
                 </div>
                 <% } %>
 
+
                     <!-- SIDEBAR -->
-                    <aside class="w-64 bg-white shadow rounded-lg p-6 h-fit sticky top-[90px] self-start">
+                    <aside id="filters" class="w-full lg:w-64 bg-white shadow rounded-lg p-6 h-fit 
+                  sticky lg:top-[90px] hidden lg:block">
 
                         <h3 class="text-lg font-semibold mb-4 text-gray-700">Sort By</h3>
                         <form action="/shop" method="GET">
@@ -56,22 +81,31 @@
 
                     </aside>
 
+                    <script>
+                        function toggleFilters() {
+                            const f = document.getElementById("filters");
+                            f.classList.toggle("hidden");
+                        }
+                    </script>
+
                     <!-- PRODUCTS GRID -->
                     <main class="flex-1">
-
                         <h2 class="text-2xl font-bold mb-6 text-gray-700">Shop All Bags</h2>
 
-                        <div class="w-full flex flex-wrap gap-5">
+                        <!-- Responsive Grid: 2 / 3 / 4 columns -->
+                        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+
                             <% products.forEach(function(product){ %>
-                                <div class="w-60">
-                                    <div
-                                        class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
-                                        <img class="h-[12rem]"
+                                <div class="w-full">
+                                    <div class="w-full h-40 sm:h-48 md:h-52 flex items-center justify-center 
+                            bg-[<%= product.bgcolor %>]">
+                                        <img class="h-28 sm:h-36 md:h-48"
                                             src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
                                             alt="<%= product.name %>">
                                     </div>
-                                    <div
-                                        class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+
+                                    <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center 
+                            px-4 py-4 text-[<%= product.textcolor %>]">
                                         <div>
                                             <h3>
                                                 <%= product.name %>
@@ -79,6 +113,7 @@
                                             <h4>₹ <%= product.price %>
                                             </h4>
                                         </div>
+
                                         <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white"
                                             href="/addtocart/<%= product._id %>">
                                             <i class="ri-add-line text-black font-bold"></i>
@@ -86,20 +121,27 @@
                                     </div>
                                 </div>
                                 <% }) %>
-                        </div>
 
+                        </div>
                     </main>
 
         </div>
-        <script>
-            setTimeout(() => {
-                document.querySelectorAll(".flash-success").forEach(msg => {
-                    msg.style.opacity = "0";
-                    msg.style.transition = "opacity .4s";
-                    setTimeout(() => msg.remove(), 400);
-                });
-            }, 3000);
-        </script>
+
+        <%- include("partials/footer") %>
+
+
+            <script>
+                setTimeout(() => {
+                    const flash = document.querySelector(".flash-success");
+                    if (flash) {
+                        flash.style.transition = "opacity 0.4s ease";
+                        flash.style.opacity = "0";
+
+                        setTimeout(() => flash.remove(), 400);
+                    }
+                }, 3000);
+            </script>
+
 
 </body>
 

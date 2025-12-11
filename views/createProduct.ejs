@@ -9,12 +9,12 @@
     <title>Create Product</title>
 </head>
 
-<body>
+<body class="bg-gray-50">
 
     <% if (success && success.length > 0) { %>
     <div
-        class="flash-success fixed top-18 left-1/2 -translate-x-1/2 
-        w-1/3 bg-green-100 border-l-4 border-green-500 text-green-800 
+        class="flash-success fixed top-20 left-1/2 -translate-x-1/2 
+        w-72 sm:w-96 bg-green-100 border-l-4 border-green-500 text-green-800 
         px-4 py-3 rounded-md shadow-md animate-slideDown z-50">
         <span><%= success %></span>
     </div>
@@ -22,66 +22,85 @@
 
     <%- include("partials/header") %>
 
+    <!-- PAGE WRAPPER -->
+    <div class="pt-[90px] px-4 md:px-10 py-10 flex flex-col md:flex-row gap-6">
 
-    <div class="flex flex-col mt-16">
-        <div class="container px-10 py-10 flex flex-grow">
-            <div class="w-[25%] flex flex-col items-start">
-                <div class="flex flex-col">
-                    <a class="block w-fit mb-2" href="/product/all">All Products</a>
-                    <a class="block w-fit mb-2" href="/product/create">Create New Product</a>
-                </div>
+        <!-- SIDEBAR (Changes to top bar on mobile) -->
+        <div class="w-full md:w-[25%] bg-white md:bg-transparent md:shadow-none shadow-sm p-4 md:p-0 rounded-lg">
+
+            <div class="flex md:flex-col gap-4 md:gap-2 text-center md:text-left">
+                <a class="block w-full md:w-fit text-gray-700 font-medium hover:text-black"
+                    href="/product/all">All Products</a>
+
+                <a class="block w-full md:w-fit text-gray-700 font-medium hover:text-black"
+                    href="/product/create">Create New Product</a>
             </div>
 
-            <main class="w-3/4 bg-white p-8 shadow ml-4">
-                <h2 class="text-xl font-bold mb-4">Create New Product</h2>
-
-                <form autocomplete="off" action="/product/create" method="post" enctype="multipart/form-data">
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold mb-2">Product Details</h3>
-
-                        <div class="mb-4">
-                            <label class="block mb-2 font-medium">Product Image</label>
-
-                            <div class="flex items-center gap-4">
-                                <label
-                                    class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-                                    Choose File
-                                    <input type="file" name="avatar" class="hidden" id="avatarInput" required>
-                                </label>
-
-                                <span id="fileName" class="text-gray-600 text-sm">No file selected</span>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <input name="name" type="text" placeholder="Product Name"
-                                class="border p-2 rounded w-full" required>
-                            <input name="price" type="text" placeholder="Product Price"
-                                class="border p-2 rounded w-full" required>
-                            <input name="discount" type="text" placeholder="Discount Price"
-                                class="border p-2 rounded w-full" required>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg font-semibold mb-2">Panel Details</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input name="bgcolor" type="text" placeholder="Background Color"
-                                class="border p-2 rounded w-full" required>
-                            <input name="panelcolor" type="text" placeholder="Panel Color"
-                                class="border p-2 rounded w-full" required>
-                            <input name="textcolor" type="text" placeholder="Text Color"
-                                class="border p-2 rounded w-full" required>
-                        </div>
-                    </div>
-
-                    <input class="px-5 py-2 rounded-lg mt-3 bg-blue-600 hover:bg-blue-700 text-white"
-                        type="submit" value="Create New Product">
-                </form>
-            </main>
         </div>
+
+        <!-- MAIN CONTENT -->
+        <main class="w-full md:w-3/4 bg-white p-6 md:p-8 shadow rounded-lg">
+
+            <h2 class="text-xl font-bold mb-4">Create New Product</h2>
+
+            <form autocomplete="off" action="/product/create" method="post" enctype="multipart/form-data">
+
+                <!-- PRODUCT DETAILS -->
+                <div class="mb-6">
+
+                    <h3 class="text-lg font-semibold mb-3">Product Details</h3>
+
+                    <!-- IMAGE INPUT -->
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium">Product Image</label>
+
+                        <div class="flex items-center gap-4 flex-wrap">
+                            <label
+                                class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
+                                Choose File
+                                <input type="file" name="avatar" class="hidden" id="avatarInput" required>
+                            </label>
+
+                            <span id="fileName" class="text-gray-600 text-sm">No file selected</span>
+                        </div>
+                    </div>
+
+                    <!-- FORM GRID -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input name="name" type="text" placeholder="Product Name"
+                            class="border p-2 rounded w-full" required>
+                        <input name="price" type="text" placeholder="Product Price"
+                            class="border p-2 rounded w-full" required>
+                        <input name="discount" type="text" placeholder="Discount Price"
+                            class="border p-2 rounded w-full" required>
+                    </div>
+
+                </div>
+
+                <!-- PANEL DETAILS -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-3">Panel Details</h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input name="bgcolor" type="text" placeholder="Background Color"
+                            class="border p-2 rounded w-full" required>
+                        <input name="panelcolor" type="text" placeholder="Panel Color"
+                            class="border p-2 rounded w-full" required>
+                        <input name="textcolor" type="text" placeholder="Text Color"
+                            class="border p-2 rounded w-full" required>
+                    </div>
+                </div>
+
+                <input
+                    class="px-5 py-2 rounded-lg mt-5 bg-blue-600 hover:bg-blue-700 text-white font-medium cursor-pointer"
+                    type="submit" value="Create New Product">
+
+            </form>
+        </main>
+
     </div>
 
+    <!-- FLASH MESSAGE SCRIPT -->
     <script>
         setTimeout(() => {
             document.querySelectorAll(".flash-success").forEach(msg => {

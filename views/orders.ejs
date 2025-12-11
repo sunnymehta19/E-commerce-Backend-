@@ -13,86 +13,147 @@
 
     <%- include("partials/header") %>
 
-    <div class="max-w-5xl mx-auto px-6 py-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pb-10">
 
         <h2 class="text-3xl font-bold mb-6">My Orders</h2>
 
         <% if (!user.order || user.order.length === 0) { %>
 
-            <!-- Empty Orders -->
-            <div class="bg-white p-10 rounded-xl shadow text-center">
-                <i class="ri-shopping-bag-line text-6xl text-gray-400"></i>
-                <h3 class="text-xl font-semibold mt-4">No Orders Yet</h3>
-                <a href="/shop" class="mt-4 inline-block bg-black text-white px-6 py-3 rounded-lg">
-                    Start Shopping
-                </a>
-            </div>
+        <!-- Empty Orders -->
+        <div class="bg-white p-8 rounded-xl shadow text-center">
+            <i class="ri-shopping-bag-line text-6xl text-gray-400"></i>
+            <h3 class="text-xl font-semibold mt-4">No Orders Yet</h3>
+            <a href="/shop" class="mt-4 inline-block bg-black text-white px-6 py-3 rounded-lg">
+                Start Shopping
+            </a>
+        </div>
 
         <% } else { %>
 
-            <!-- ORDER LIST -->
-            <div class="space-y-6">
+        <!-- ORDER LIST -->
+        <div class="space-y-6">
 
-                <% user.order.forEach(o => { %>
-                <div class="bg-white rounded-xl shadow p-6">
+            <% user.order.forEach(o => { %>
+            <div class="bg-white rounded-xl shadow p-4 sm:p-6">
 
-                    <!-- ORDER HEADER -->
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <h3 class="font-semibold text-lg">Order ID: <%= o._id %></h3>
+                <!-- ORDER HEADER -->
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-b pb-3">
+                    <h3 class="font-semibold text-sm break-all">Order ID: <%= o._id %></h3>
 
-                        <span class="
-                            px-3 py-1 rounded-full text-sm font-semibold
-                            <% if (o.status === 'Delivered') { %> bg-green-100 text-green-700
-                            <% } else if (o.status === 'Shipped') { %> bg-blue-100 text-blue-700
-                            <% } else { %> bg-yellow-100 text-yellow-700 <% } %>
-                        ">
-                            <%= o.status || "Processing" %>
-                        </span>
-                    </div>
+                    <span class="
+                        px-3 py-1 rounded-full text-sm font-semibold self-start
+                        <% if (o.status === 'Delivered') { %> bg-green-100 text-green-700
+                        <% } else if (o.status === 'Shipped') { %> bg-blue-100 text-blue-700
+                        <% } else if (o.status === 'Cancelled') { %> bg-red-100 text-red-700
+                        <% } else { %> bg-yellow-100 text-yellow-700 <% } %>
+                    ">
+                        <%= o.status || "Processing" %>
+                    </span>
+                </div>
 
-                    <!-- ORDER ITEM -->
-                    <div class="flex items-center gap-5 mt-4">
+                <!-- ORDER ITEMS -->
+                <div class="mt-4 space-y-4">
+
+                    <% o.items.forEach(it => { %>
+
+                    <div class="
+                        flex flex-col sm:flex-row 
+                        sm:items-center gap-4 
+                        bg-white p-4 rounded-lg shadow-sm
+                    ">
 
                         <!-- IMAGE -->
-                        <div class="w-28 h-28 bg-gray-100 rounded flex items-center justify-center">
-                            <img src="data:image/jpeg;base64,<%= o.product.image.toString('base64') %>"
+                        <div class="w-24 h-24 mx-auto sm:mx-0 bg-gray-100 rounded flex items-center justify-center">
+                            <img src="data:image/jpeg;base64,<%= it.product.image.toString('base64') %>"
                                 class="h-20 object-contain" />
                         </div>
 
                         <!-- DETAILS -->
-                        <div class="flex-1">
-                            <h3 class="text-lg font-semibold"><%= o.product.name %></h3>
+                        <div class="flex-1 text-center sm:text-left">
+                            <h3 class="text-lg font-semibold"><%= it.product.name %></h3>
 
-                            <p class="text-gray-600">
-                                Price: ₹ <%= o.product.price %>
-                            </p>
-
-                            <p class="text-gray-600">
-                                Quantity: <%= o.quantity %>
-                            </p>
+                            <p class="text-gray-600">Price: ₹ <%= it.product.price %></p>
+                            <p class="text-gray-600">Quantity: <%= it.quantity %></p>
 
                             <p class="text-gray-500 text-sm mt-2">
-                                Ordered on
-                                <%= new Date(o.date).toLocaleDateString() %>
+                                Ordered on <%= new Date(o.date).toLocaleDateString() %>
                             </p>
                         </div>
 
-                        <!-- REORDER BUTTON -->
-                        <a href="/addtocart/<%= o.product._id %>"
-                            class="px-5 py-2 bg-black text-white rounded-lg hover:bg-gray-800">
-                            Reorder
-                        </a>
+                        <!-- BUTTON / STATUS -->
+                        <div class="flex justify-center sm:justify-end w-full sm:w-auto">
+
+                            <% if (o.status !== "Cancelled") { %>
+                            <button 
+                                onclick="openCancelModal('<%= o._id %>')" 
+                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                Cancel Order
+                            </button>
+                            <% } else { %>
+                            <span class="text-red-500 font-semibold">Cancelled</span>
+                            <% } %>
+
+                        </div>
 
                     </div>
 
+                    <% }) %>
+
                 </div>
-                <% }) %>
 
             </div>
+            <% }) %>
+
+        </div>
 
         <% } %>
 
     </div>
+
+
+    <!-- ❗ CANCEL ORDER CONFIRMATION MODAL -->
+    <div id="cancelModal"
+        class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+        <div class="bg-white p-6 rounded-xl shadow-lg w-80 animate-fadeIn">
+
+            <h3 class="text-xl font-bold mb-3 text-gray-800">Cancel Order?</h3>
+            <p class="text-gray-600 mb-5">
+                Are you sure you want to cancel this order?  
+                This action cannot be undone.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex justify-end gap-3">
+
+                <button onclick="closeModal()"
+                    class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                    Close
+                </button>
+
+                <form id="cancelForm" method="POST">
+                    <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                        Yes, Cancel
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openCancelModal(orderId) {
+            const modal = document.getElementById("cancelModal");
+            const form = document.getElementById("cancelForm");
+
+            form.action = "/orders/cancel/" + orderId;
+            modal.classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("cancelModal").classList.add("hidden");
+        }
+    </script>
 
 </body>
 

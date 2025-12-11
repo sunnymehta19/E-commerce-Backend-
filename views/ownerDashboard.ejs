@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+    <title>Admin Dashboard</title>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- TOP NAVBAR -->
+    <div class="w-full bg-white shadow-sm h-[70px] flex justify-between items-center px-6 fixed top-0 left-0 z-40">
+
+        <!-- Hamburger for Mobile -->
+        <button onclick="openSidebar()" class="text-3xl md:hidden">
+            <i class="ri-menu-line"></i>
+        </button>
+
+        <h1 class="text-2xl md:text-3xl font-bold tracking-wide text-gray-800">BagVerse Admin</h1>
+
+        <a href="/owner/logout"
+            class="bg-red-600 px-4 py-2 text-white rounded-lg font-semibold hover:bg-red-700">
+            Logout
+        </a>
+    </div>
+
+    <!-- SIDEBAR (DESKTOP FIXED + MOBILE SLIDE-IN) -->
+    <aside id="sidebar"
+        class="fixed top-[70px] left-0 w-64 bg-white h-[calc(100vh-70px)] shadow-md p-6 transition-all duration-300 z-50
+        md:translate-x-0 -translate-x-full">
+
+        <h2 class="text-lg font-semibold mb-4">Menu</h2>
+
+        <div class="flex flex-col gap-4 text-gray-700">
+            <a href="/owner/admin" class="hover:text-black">Dashboard</a>
+            <a href="/product/all" class="hover:text-black">Manage Products</a>
+            <a href="/product/create" class="hover:text-black">Create Product</a>
+            <a href="/owner/logout" class="text-red-600 hover:text-red-800">Logout</a>
+        </div>
+
+        <!-- Close button (Mobile only) -->
+        <button onclick="closeSidebar()" class="absolute top-5 right-5 text-2xl md:hidden">
+            <i class="ri-close-line"></i>
+        </button>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-[90px] md:ml-64 px-6 transition-all duration-300">
+
+        <!-- FLASH MESSAGE -->
+        <% if (success && success.length>0) { %>
+            <div class="flash-success bg-green-100 border-l-4 border-green-600 text-green-800
+                        px-4 py-3 rounded-md shadow-md mb-5 w-fit animate-slideDown">
+                <%= success %>
+            </div>
+        <% } %>
+
+        <!-- Dashboard Heading -->
+        <h2 class="text-2xl font-bold mb-6">Dashboard Overview</h2>
+
+        <!-- DASHBOARD CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <div class="p-6 bg-blue-600 text-white rounded-xl shadow">
+                <h3 class="text-lg font-semibold">Total Products</h3>
+                <p class="text-3xl font-bold mt-2"><%= totalProducts %></p>
+            </div>
+
+            <div class="p-6 bg-purple-600 text-white rounded-xl shadow">
+                <h3 class="text-lg font-semibold">Total Users</h3>
+                <p class="text-3xl font-bold mt-2"><%= totalUsers %></p>
+            </div>
+
+            <div class="p-6 bg-green-600 text-white rounded-xl shadow">
+                <h3 class="text-lg font-semibold">Total Orders</h3>
+                <p class="text-3xl font-bold mt-2"><%= totalOrders %></p>
+            </div>
+
+            <div class="p-6 bg-amber-600 text-white rounded-xl shadow">
+                <h3 class="text-lg font-semibold">Pending Orders</h3>
+                <p class="text-3xl font-bold mt-2"><%= pendingOrders %></p>
+            </div>
+        </div>
+
+        <!-- ACTION CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+
+            <a href="/product/create"
+                class="block bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">Create Product</h3>
+                <p class="text-gray-500">Add new bags to your shop</p>
+            </a>
+
+            <a href="/product/all"
+                class="block bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+                <h3 class="text-xl font-bold">Manage Products</h3>
+                <p class="text-gray-500">Edit, delete or update items</p>
+            </a>
+
+        </div>
+
+        <br><br>
+    </main>
+
+    <!-- SIDEBAR SCRIPTS -->
+    <script>
+        function openSidebar() {
+            document.getElementById("sidebar").classList.remove("-translate-x-full");
+        }
+        function closeSidebar() {
+            document.getElementById("sidebar").classList.add("-translate-x-full");
+        }
+
+        // Auto remove flash
+        setTimeout(() => {
+            document.querySelectorAll(".flash-success").forEach(msg => {
+                msg.style.opacity = "0";
+                msg.style.transition = "opacity .4s";
+                setTimeout(() => msg.remove(), 400);
+            });
+        }, 2500);
+    </script>
+
+</body>
+
+</html>

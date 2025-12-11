@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+    <title>Contact Us — BagVerse</title>
+</head>
+
+<body class="bg-gray-50 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+    <div class="max-w-3xl mx-auto px-6 py-12">
+
+        <h1 class="text-4xl font-bold mb-6">Contact Us</h1>
+
+        <p class="text-gray-700 text-lg mb-8">
+            We're here to help you with orders, questions or support.  
+            Reach out anytime using the details below.
+        </p>
+
+        <!-- CONTACT BOX -->
+        <div class="bg-white shadow-md rounded-xl p-8 space-y-6">
+
+            <!-- Email -->
+            <div class="flex items-start gap-4">
+                <i class="ri-mail-line text-3xl text-black"></i>
+                <div>
+                    <h3 class="text-xl font-semibold">Email</h3>
+                    <p class="text-gray-600">sunnymehta.here@gmail.com</p>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex items-start gap-4">
+                <i class="ri-phone-line text-3xl text-black"></i>
+                <div>
+                    <h3 class="text-xl font-semibold">Phone</h3>
+                    <p class="text-gray-600">+91 93xxxx1636</p>
+                </div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="flex items-start gap-4">
+                <i class="ri-whatsapp-line text-3xl text-green-600"></i>
+                <div>
+                    <h3 class="text-xl font-semibold">WhatsApp</h3>
+                    <p class="text-gray-600">+91 93xxxx1636</p>
+                </div>
+            </div>
+
+            <!-- Support Hours -->
+            <div class="flex items-start gap-4">
+                <i class="ri-time-line text-3xl text-black"></i>
+                <div>
+                    <h3 class="text-xl font-semibold">Support Hours</h3>
+                    <p class="text-gray-600">Monday – Saturday • 10:00 AM – 6:00 PM</p>
+                </div>
+            </div>
+
+           
+
+        </div>
+    </div>
+
+    <%- include("partials/footer") %>
+
+</body>
+
+</html>

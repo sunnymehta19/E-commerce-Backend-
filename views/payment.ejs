@@ -11,9 +11,10 @@
 
 <body class="bg-gray-50 pt-[90px]">
 
+    <!-- NAVBAR -->
     <%- include("partials/header") %>
 
-    <div class="max-w-6xl mx-auto px-6 pb-10">
+    <div class="max-w-6xl mx-auto px-6 py-10">
 
         <h2 class="text-3xl font-bold mb-6">Payment</h2>
 
@@ -31,36 +32,31 @@
 
                     <% if (user.address) { %>
                     <p class="text-gray-700"><%= user.address %></p>
+
                     <% } else { %>
-                    <p class="text-gray-500">No address added.</p>
+                    <p class="text-red-500 font-medium">No address added!</p>
+                    <a href="/edit-address" class="text-blue-600 hover:underline">
+                        Add Address
+                    </a>
                     <% } %>
                 </div>
 
-                <!-- PAYMENT OPTIONS -->
+                <!-- ORDER ITEMS PREVIEW -->
                 <div class="bg-white p-6 rounded-xl shadow">
-                    <h3 class="text-xl font-semibold mb-4">Choose Payment Method</h3>
+                    <h3 class="text-xl font-semibold mb-4">Items in Cart</h3>
 
-                    <div class="space-y-4">
+                    <% user.cart.forEach(item => { %>
+                    <div class="flex items-center gap-4 border-b py-3">
+                        <img src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
+                            class="h-16 w-16 object-contain rounded-lg">
 
-                        <!-- UPI -->
-                        <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl cursor-pointer border hover:border-black transition">
-                            <input type="radio" name="payment_method" value="UPI" class="h-5 w-5">
-                            <span class="text-lg font-medium">UPI (Google Pay, PhonePe, Paytm)</span>
-                        </label>
-
-                        <!-- Card -->
-                        <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl cursor-pointer border hover:border-black transition">
-                            <input type="radio" name="payment_method" value="Card" class="h-5 w-5">
-                            <span class="text-lg font-medium">Credit / Debit Card</span>
-                        </label>
-
-                        <!-- COD -->
-                        <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl cursor-pointer border hover:border-black transition">
-                            <input type="radio" name="payment_method" value="COD" class="h-5 w-5">
-                            <span class="text-lg font-medium">Cash On Delivery</span>
-                        </label>
-
+                        <div>
+                            <p class="font-semibold"><%= item.product.name %></p>
+                            <p class="text-gray-600 text-sm">Qty: <%= item.quantity %></p>
+                            <p class="font-semibold">₹ <%= item.product.price %></p>
+                        </div>
                     </div>
+                    <% }) %>
                 </div>
 
             </div>
@@ -96,16 +92,11 @@
                         <span>₹ <%= subtotal + 20 %></span>
                     </div>
 
-                    <!-- FINAL PAY BUTTON -->
-                    <form action="/place-order" method="POST" id="paymentForm">
-                        <input type="hidden" name="payment_method" id="selectedMethod">
-
-                        <button
-                            type="submit"
-                            class="w-full bg-black text-white py-3 rounded-lg mt-6 font-semibold hover:bg-gray-800">
-                            Pay Now
-                        </button>
-                    </form>
+                    <!-- FAKE PAYMENT BUTTON -->
+                    <a href="/fake-payment"
+                        class="block bg-black text-white text-center py-3 rounded-lg mt-6 font-semibold hover:bg-gray-800">
+                        Proceed to Pay
+                    </a>
 
                 </div>
 
@@ -113,23 +104,6 @@
 
         </div>
     </div>
-
-    <script>
-        // Select payment method
-        document.querySelectorAll('input[name="payment_method"]').forEach(option => {
-            option.addEventListener("change", () => {
-                document.getElementById("selectedMethod").value = option.value;
-            });
-        });
-
-        // Block submission without choosing payment
-        document.getElementById("paymentForm").addEventListener("submit", (e) => {
-            if (!document.getElementById("selectedMethod").value) {
-                e.preventDefault();
-                alert("Please select a payment method");
-            }
-        });
-    </script>
 
 </body>
 

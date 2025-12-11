@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <title>Payment Gateway</title>
+</head>
+
+<body class="bg-gray-100 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+    <div class="max-w-lg mx-auto bg-white shadow-lg p-8 rounded-xl mt-10">
+
+        <h2 class="text-2xl font-bold text-center mb-6">Secure Payment</h2>
+
+        <p class="text-gray-600 text-center mb-3">Amount to Pay:  
+            <span class="font-bold">₹ <%= total %></span>
+        </p>
+
+        <!-- Fake payment form -->
+        <form action="/fake-payment/confirm" method="POST" class="space-y-6">
+
+            <div>
+                <label class="font-semibold">Select Payment Method</label>
+                <select name="method" class="w-full mt-2 p-3 border rounded-lg">
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Credit / Debit Card</option>
+                    <option value="COD">Cash on Delivery</option>
+                </select>
+            </div>
+
+            <!-- Fake UPI -->
+            <div>
+                <label class="font-semibold">UPI ID (Fake)</label>
+                <input type="text" 
+                       name="upi" 
+                       class="w-full p-3 border rounded-lg"
+                       placeholder="example@upi" />
+            </div>
+
+            <button 
+                class="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800">
+                Proceed Payment
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>

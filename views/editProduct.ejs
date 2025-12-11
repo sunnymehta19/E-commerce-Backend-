@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Edit Product</title>
+</head>
+
+<body class="bg-gray-100 pt-[90px]">
+
+    <%- include("partials/header") %>
+
+    <div class="max-w-xl mx-auto bg-white shadow rounded-xl p-6">
+
+        <h2 class="text-2xl font-bold mb-4">Edit Product</h2>
+
+        <form action="/product/edit/<%= product._id %>" method="POST">
+            <input type="text" name="name" value="<%= product.name %>"
+                class="border p-2 w-full mb-3 rounded">
+
+            <input type="text" name="price" value="<%= product.price %>"
+                class="border p-2 w-full mb-3 rounded">
+
+            <input type="text" name="discount" value="<%= product.discount %>"
+                class="border p-2 w-full mb-3 rounded">
+
+            <input type="text" name="bgcolor" value="<%= product.bgcolor %>"
+                class="border p-2 w-full mb-3 rounded">
+
+            <input type="text" name="panelcolor" value="<%= product.panelcolor %>"
+                class="border p-2 w-full mb-3 rounded">
+
+            <input type="text" name="textcolor" value="<%= product.textcolor %>"
+                class="border p-2 w-full mb-3 rounded">
+
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg mt-3">
+                Save Changes
+            </button>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

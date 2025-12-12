@@ -5,6 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        /* Eye icon colors */
+        .eye-icon {
+            color: #6b7280; /* gray-500 */
+        }
+        .eye-icon.active {
+            color: #2563eb; /* blue-600 */
+        }
+    </style>
+
     <title>Login</title>
 </head>
 
@@ -20,24 +31,44 @@
         <!-- CARD -->
         <div class="
             bg-white rounded-xl p-5 shadow-md
-            w-[85%] max-w-[280px]     <!-- SUPER SMALL MOBILE SIZE -->
-            md:max-w-[350px]         <!-- DESKTOP stays same -->
+            w-[85%] max-w-[280px]
+            md:max-w-[350px]
             md:w-[350px]
         ">
 
             <form action="/user/login" method="post">
+
                 <div class="text-center text-lg font-bold mb-6 mt-2">
                     Login Your Account
                 </div>
 
                 <div class="flex flex-col">
 
+                    <!-- EMAIL -->
                     <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-2.5 mb-3 text-sm"
                         type="text" placeholder="Enter Email" name="email" required>
 
-                    <input class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-2.5 mb-4 text-sm"
-                        type="password" placeholder="Enter Password" name="password" required>
+                    <!-- PASSWORD WITH EYE ICON -->
+                    <div class="relative mb-4">
+                        <input id="passwordField"
+                            class="bg-[#f1f1f1] outline-none rounded-lg px-3 py-2.5 w-full text-sm"
+                            type="password" placeholder="Enter Password" name="password" required>
 
+                        <!-- Eye Icon -->
+                        <svg id="togglePassword"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor"
+                            class="eye-icon absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 cursor-pointer">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 
+                                   12 4.5c4.64 0 8.577 3.01 9.964 7.183.07.207.07.432 0 
+                                   .639C20.577 16.49 16.64 19.5 12 19.5c-4.64 0-8.577-3.01-9.964-7.183z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                    </div>
+
+                    <!-- FLASH ERROR -->
                     <% if (error.length > 0) { %>
                     <div
                         class="flash-msg bg-red-100 border-l-4 border-red-500 text-red-800 
@@ -46,18 +77,22 @@
                     </div>
                     <% } %>
 
+                    <!-- SUBMIT BUTTON -->
                     <input
-                        class="bg-amber-600 rounded-lg py-2.5 text-white font-bold text-base hover:bg-amber-700 transition cursor-pointer"
+                        class="bg-amber-600 rounded-lg py-2.5 text-white font-bold text-base 
+                        hover:bg-amber-700 transition cursor-pointer"
                         type="submit" value="Login">
 
                 </div>
 
+                <!-- LINKS -->
                 <div class="flex justify-center gap-2 text-xs mt-3">
                     <p>Don't have an account?</p>
-                    <a class="text-blue-800 hover:underline" href="/">Create</a>                 
+                    <a class="text-blue-800 hover:underline" href="/">Create</a>
                 </div>
+
                 <div class="flex justify-center gap-2 text-xs mt-1">
-                    <p>Are you a Admin?</p>
+                    <p>Are you an Admin?</p>
                     <a class="text-blue-800 hover:underline" href="/owner/login">Admin</a>
                 </div>
 
@@ -67,6 +102,39 @@
 
     </div>
 
-</body> 
+
+    <!-- PASSWORD SHOW/HIDE SCRIPT -->
+    <script>
+        const passwordField = document.getElementById("passwordField");
+        const toggleBtn = document.getElementById("togglePassword");
+
+        toggleBtn.addEventListener("click", () => {
+            const isPassword = passwordField.type === "password";
+            passwordField.type = isPassword ? "text" : "password";
+
+            toggleBtn.classList.toggle("active");
+
+            // Switch icon open/close
+            if (isPassword) {
+                toggleBtn.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.98 8.223A10.477 10.477 0 001.53 12c1.676 4.045 5.37 7 10.47 7
+                           1.846 0 3.594-.457 5.128-1.268M6.228 6.228A10.45 10.45 0 0112 5c5.1 0 
+                           8.794 2.955 10.47 7a10.52 10.52 0 01-4.21 4.867M6.228 6.228L3 3m3.228 
+                           3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65"/>
+                `;
+            } else {
+                toggleBtn.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 
+                           12 4.5c4.64 0 8.577 3.01 9.964 7.183.07.207.07.432 0 
+                           .639C20.577 16.49 16.64 19.5 12 19.5c-4.64 0-8.577-3.01-9.964-7.183z" />
+                    <circle cx="12" cy="12" r="3" />
+                `;
+            }
+        });
+    </script>
+
+</body>
 
 </html>

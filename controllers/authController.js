@@ -6,6 +6,14 @@ const jwt = require("jsonwebtoken");
 const registerUser = async (req, res) => {
     try {
         let { username, email, password, contact, address } = req.body;
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(email)) {
+            req.flash("error", "Please enter a valid email address.");
+            return res.redirect("/");   // or "/" if your register page is at "/"
+        }
+
         let user = await userModel.findOne({ email: email })
         if (user) {
             // return res.status(401).send("You already have an account, Please Login.")

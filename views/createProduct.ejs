@@ -23,7 +23,7 @@
     <% } %>
 
     <!-- TOP ADMIN NAVBAR -->
-    <header class="fixed top-0 left-0 w-full bg-white h-[70px] shadow flex items-center justify-between px-6 z-50">
+    <header class="fixed top-0 left-0 w-full bg-white h-[70px] shadow flex items-center justify-start gap-2 px-6 z-50">
 
         <!-- Hamburger (Mobile) -->
         <button onclick="openSidebar()" class="text-3xl md:hidden">
@@ -32,10 +32,7 @@
 
         <h1 class="text-2xl font-bold">BagVerse Admin</h1>
 
-        <a href="/owner/logout"
-            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium">
-            Logout
-        </a>
+        
     </header>
 
     <!-- SIDEBAR -->
@@ -112,10 +109,10 @@
     <!-- SCRIPTS -->
     <script>
         function openSidebar() {
-            document.getElementById("adminSidebar").classList.remove("-translate-x-full");
+            document.getElementById("sidebar").classList.remove("-translate-x-full");
         }
         function closeSidebar() {
-            document.getElementById("adminSidebar").classList.add("-translate-x-full");
+            document.getElementById("sidebar").classList.add("-translate-x-full");
         }
 
         // Flash message fade-out

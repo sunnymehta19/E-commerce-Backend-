@@ -12,7 +12,7 @@
 <body class="bg-gray-100">
 
     <!-- TOP NAV -->
-    <div class="w-full bg-white shadow-sm h-[70px] flex justify-between items-center px-6 fixed top-0 left-0 z-40">
+    <div class="w-full bg-white shadow-sm h-[70px] flex justify-start gap-2 items-center px-6 fixed top-0 left-0 z-40">
 
         <button onclick="openSidebar()" class="text-3xl md:hidden">
             <i class="ri-menu-line"></i>
@@ -20,72 +20,141 @@
 
         <h1 class="text-2xl font-semibold">Manage Orders</h1>
 
-        <a href="/owner/logout"
-            class="bg-red-600 px-4 py-2 text-white rounded-lg hover:bg-red-700">Logout</a>
     </div>
 
     <!-- SIDEBAR -->
-<%- include("../partials/adminSidebar") %>
+    <%- include("../partials/adminSidebar") %>
 
-    <!-- MAIN CONTENT -->
-    <main class="pt-[90px] md:ml-64 px-6">
+        <!-- MAIN CONTENT -->
+        <main class="pt-[90px] md:ml-64 px-4 sm:px-6 pb-10 transition-all duration-300">
 
-        <h2 class="text-3xl font-bold mb-6">All Orders</h2>
+            <h2 class="text-3xl font-bold mb-6">All Orders</h2>
 
-        <div class="space-y-6">
-
-            <% allOrders.forEach(order => { %>
-
-            <div class="bg-white p-6 rounded-lg shadow">
-
-                <div class="flex justify-between items-center border-b pb-3">
-                    <h3 class="font-bold text-lg">Order ID: <%= order._id %></h3>
-
-                    <form method="POST" action="/orders/admin/update/<%= order._id %>">
-                        <select name="status" class="border p-2 rounded-lg">
-                            <option <%= order.status==="Processing"?"selected":"" %>>Processing</option>
-                            <option <%= order.status==="Shipped"?"selected":"" %>>Shipped</option>
-                            <option <%= order.status==="Delivered"?"selected":"" %>>Delivered</option>
-                        </select>
-                        <button class="bg-blue-600 text-white px-3 py-1 rounded-lg ml-2">Update</button>
-                    </form>
+            <% if (allOrders.length===0) { %>
+                <div class="bg-white p-10 rounded-xl shadow text-center">
+                    <i class="ri-file-list-line text-6xl text-gray-400"></i>
+                    <h3 class="text-xl font-semibold mt-4">No Orders Found</h3>
                 </div>
+                <% } %>
 
-                <div class="mt-4 space-y-4">
-                    <% order.items.forEach(i => { %>
+                    <div class="space-y-6">
 
-                    <div class="flex gap-4 items-center bg-gray-50 p-3 rounded-lg">
+                        <% allOrders.forEach(order=> { %>
 
-                        <img src="data:image/jpeg;base64,<%= i.product.image.toString('base64') %>"
-                            class="h-16 rounded border" />
+                            <div class="bg-white p-6 rounded-lg shadow">
 
-                        <div>
-                            <h4 class="font-bold"><%= i.product.name %></h4>
-                            <p>Qty: <%= i.quantity %></p>
-                            <p class="text-gray-500 text-sm"><%= new Date(order.date).toLocaleDateString() %></p>
-                        </div>
+                                <!-- HEADER -->
+                                <div
+                                    class="flex flex-col sm:flex-row justify-between sm:items-center border-b pb-3 gap-3">
+
+                                    <div>
+                                        <h3 class="font-bold text-lg break-all">Order ID: <%= order.orderId %>
+                                        </h3>
+                                        <p class="text-gray-600 text-sm">Customer: <%= order.user %>
+                                        </p>
+                                        <p class="text-gray-600 text-sm">Email: <%= order.email %>
+                                        </p>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+
+                                        <!-- COLORED STATUS BADGE -->
+                                        <span class="
+                            px-3 py-1 rounded-full text-sm font-semibold
+                            <% if (order.status === 'Delivered') { %> bg-green-100 text-green-700
+                            <% } else if (order.status === 'Shipped') { %> bg-blue-100 text-blue-700
+                            <% } else if (order.status === 'Cancelled') { %> bg-red-100 text-red-700
+                            <% } else { %> bg-yellow-100 text-yellow-700 <% } %>
+                        ">
+                                            <%= order.status %>
+                                        </span>
+
+                                    </div>
+                                </div>
+
+                                <!-- ORDER ITEMS -->
+                                <div class="mt-4 space-y-4">
+
+                                    <% order.items.forEach(item=> { %>
+
+                                        <div
+                                            class="flex flex-col sm:flex-row items-center gap-4 bg-gray-50 p-4 rounded-lg">
+
+                                            <img src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
+                                                class="h-20 w-20 rounded object-cover">
+
+                                            <div class="flex-1 text-center sm:text-left">
+                                                <h4 class="font-semibold text-gray-800">
+                                                    <%= item.product.name %>
+                                                </h4>
+
+                                                <p class="text-gray-600 text-sm">Qty: <%= item.quantity %>
+                                                </p>
+                                                <p class="text-gray-500 text-sm">
+                                                    Ordered: <%= new Date(order.date).toLocaleDateString() %>
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                        <% }) %>
+
+                                </div>
+
+                                <!-- ADMIN ORDER STATUS CONTROL -->
+                                <!-- ORDER STATUS + UPDATE BUTTON -->
+<div class="flex items-center gap-3">
+
+    <% if (order.status === "Delivered") { %>
+
+        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg font-semibold">
+            Delivered
+        </span>
+
+    <% } else if (order.status === "Cancelled") { %>
+
+        <span class="px-3 py-1 bg-red-100 text-red-700 rounded-lg font-semibold">
+            Cancelled by User
+        </span>
+
+    <% } else { %>
+
+        <!-- Admin Update Form (Processing or Shipped) -->
+        <form method="POST" action="/owner/orders/admin/update/<%= order.orderId %>" class="flex items-center gap-2">
+            <select name="status" class="border p-2 rounded-lg">
+                <option <%= order.status==="Processing"?"selected":"" %>>Processing</option>
+                <option <%= order.status==="Shipped"?"selected":"" %>>Shipped</option>
+                <option <%= order.status==="Delivered"?"selected":"" %>>Delivered</option>
+            </select>
+
+            <button class="bg-blue-600 text-white px-3 py-1 rounded-lg">
+                Update
+            </button>
+        </form>
+
+    <% } %>
+
+</div>
+
+
+
+                            </div>
+
+                            <% }) %>
 
                     </div>
 
-                    <% }) %>
-                </div>
+        </main>
 
-            </div>
-
-            <% }) %>
-
-        </div>
-
-    </main>
-
-    <script>
-        function openSidebar() {
-            document.getElementById("sidebar").classList.remove("-translate-x-full");
-        }
-        function closeSidebar() {
-            document.getElementById("sidebar").classList.add("-translate-x-full");
-        }
-    </script>
+        <script>
+            function openSidebar() {
+                document.getElementById("sidebar").classList.remove("-translate-x-full");
+            }
+            function closeSidebar() {
+                document.getElementById("sidebar").classList.add("-translate-x-full");
+            }
+        </script>
 
 </body>
+
 </html>

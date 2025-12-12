@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const config = require("config")
 const debug = require("debug")("development:mongoose")
+require("dotenv").config();
 
-mongoose.connect(`${config.get("MONGODB_URI")}/bagVerse`)
+mongoose.connect(`${process.env.MONGODB_URI}/bagVerse`)
 
 .then(() => {
     debug("connected");

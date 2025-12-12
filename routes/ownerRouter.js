@@ -128,7 +128,6 @@ router.get("/dashboard", isOwner, async (req, res) => {
 // ADMIN ORDERS PAGE
 router.get("/orders", isOwner, async (req, res) => {
     try {
-        // Fetch all users because orders are stored inside user.order[]
         let users = await userModel.find().populate("order.items.product");
 
         let allOrders = [];
@@ -147,12 +146,42 @@ router.get("/orders", isOwner, async (req, res) => {
             });
         });
 
+        allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
         res.render("admin/adminOrders", { allOrders });
 
     } catch (err) {
         res.send(err.message);
     }
 });
+
+
+//update orders
+router.post("/orders/admin/update/:orderId", isOwner, async (req, res) => {
+    try {
+        const { status } = req.body;
+
+        // Find the user containing the order
+        let user = await userModel.findOne({ "order._id": req.params.orderId });
+        if (!user) return res.send("Order not found");
+
+        // Update order status
+        user.order.forEach(o => {
+            if (o._id.toString() === req.params.orderId) {
+                o.status = status;
+            }
+        });
+
+        await user.save();
+        req.flash("success", "Order updated successfully!");
+        res.redirect("/owner/orders");
+
+    } catch (err) {
+        res.send(err.message);
+    }
+});
+
+
 
 
 // SHOW CREATE PRODUCT PAGE

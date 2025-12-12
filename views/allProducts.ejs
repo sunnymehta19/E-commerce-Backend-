@@ -12,7 +12,7 @@
 <body class="bg-gray-100">
 
     <!-- TOP NAVBAR -->
-    <div class="w-full bg-white shadow-sm h-[70px] flex justify-between items-center px-6 fixed top-0 left-0 z-40">
+    <div class="w-full bg-white shadow-sm h-[70px] flex justify-start gap-2 items-center px-6 fixed top-0 left-0 z-40">
 
         <!-- Hamburger (Mobile only) -->
         <button onclick="openSidebar()" class="text-3xl md:hidden">
@@ -21,17 +21,14 @@
 
         <h1 class="text-2xl font-bold tracking-wide text-gray-800">BagVerse Admin</h1>
 
-        <a href="/owner/logout"
-            class="bg-red-600 px-4 py-2 text-white rounded-lg font-semibold hover:bg-red-700">
-            Logout
-        </a>
+    
     </div>
 
     <!-- SIDEBAR -->
-<%- include("./partials/adminSidebar") %>
+    <%- include("./partials/adminSidebar") %>
 
     <!-- MAIN CONTENT -->
-    <main class="pt-[90px] md:ml-64 px-6 transition-all duration-300">
+    <main class="pt-[90px] md:ml-64 px-4 md:px-6 transition-all duration-300">
 
         <h2 class="text-3xl font-bold mb-6">Manage Products</h2>
 
@@ -41,53 +38,86 @@
             + Create New Product
         </a>
 
-        <!-- PRODUCTS TABLE -->
-        <div class="overflow-x-auto bg-white shadow rounded-xl p-6">
+        <!-- ===== PRODUCT LIST (FULL TABLE ON DESKTOP, CARDS ON MOBILE) ===== -->
+        <div class="bg-white shadow rounded-xl p-4 md:p-6">
 
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="border-b text-gray-700">
-                        <th class="py-3 px-2">Image</th>
-                        <th class="py-3 px-2">Name</th>
-                        <th class="py-3 px-2">Price</th>
-                        <th class="py-3 px-2">Discount</th>
-                        <th class="py-3 px-2">Actions</th>
-                    </tr>
-                </thead>
+            <!-- DESKTOP TABLE -->
+            <div class="hidden sm:block overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b text-gray-700">
+                            <th class="py-3 px-2">Image</th>
+                            <th class="py-3 px-2">Name</th>
+                            <th class="py-3 px-2">Price</th>
+                            <th class="py-3 px-2">Discount</th>
+                            <th class="py-3 px-2">Actions</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    <% products.forEach(p => { %>
-                    <tr class="border-b hover:bg-gray-50">
+                    <tbody>
+                        <% products.forEach(p => { %>
+                        <tr class="border-b hover:bg-gray-50">
 
-                        <td class="py-3 px-2">
-                            <img class="h-14 rounded-md  p-1 "
-                                src="data:image/jpeg;base64,<%= p.image.toString('base64') %>"
-                                alt="<%= p.name %>">
-                        </td>
+                            <td class="py-3 px-2">
+                                <img class="h-14 rounded-md p-1"
+                                    src="data:image/jpeg;base64,<%= p.image.toString('base64') %>" />
+                            </td>
 
-                        <td class="py-3 px-2 font-semibold text-gray-800"><%= p.name %></td>
+                            <td class="py-3 px-2 font-semibold text-gray-800"><%= p.name %></td>
+                            <td class="py-3 px-2">₹ <%= p.price %></td>
+                            <td class="py-3 px-2">₹ <%= p.discount %></td>
 
-                        <td class="py-3 px-2">₹ <%= p.price %></td>
+                            <td class="py-3 px-2 flex gap-3">
+                                <a href="/product/edit/<%= p._id %>" class="text-blue-600 hover:text-blue-800 text-xl">
+                                    <i class="ri-edit-2-line"></i>
+                                </a>
 
-                        <td class="py-3 px-2">₹ <%= p.discount %></td>
+                                <button onclick="confirmDelete('<%= p._id %>')"
+                                    class="text-red-600 hover:text-red-800 text-xl">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </td>
 
-                        <td class="py-3 px-2 flex gap-3">
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
 
-                            <a href="/product/edit/<%= p._id %>"
-                                class="text-blue-600 hover:text-blue-800 text-xl">
-                                <i class="ri-edit-2-line"></i>
-                            </a>
+            <!-- MOBILE CARD VIEW -->
+            <div class="sm:hidden space-y-4 mt-4">
 
-                            <button onclick="confirmDelete('<%= p._id %>')"
-                                class="text-red-600 hover:text-red-800 text-xl">
-                                <i class="ri-delete-bin-line"></i>
-                            </button>
+                <% products.forEach(p => { %>
+                <div class="border rounded-lg p-4 shadow-sm bg-gray-50">
 
-                        </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+                    <div class="flex items-center gap-4">
+                        <img class="h-16 w-16 rounded-md object-cover"
+                            src="data:image/jpeg;base64,<%= p.image.toString('base64') %>" />
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-900"><%= p.name %></h3>
+                            <p class="text-gray-700 text-sm">Price: ₹ <%= p.price %></p>
+                            <p class="text-gray-700 text-sm">Discount: ₹ <%= p.discount %></p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-4 mt-3">
+                        <a href="/product/edit/<%= p._id %>"
+                            class="text-blue-600 hover:text-blue-800 text-xl">
+                            <i class="ri-edit-2-line"></i>
+                        </a>
+
+                        <button onclick="confirmDelete('<%= p._id %>')"
+                            class="text-red-600 hover:text-red-800 text-xl">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </div>
+
+                </div>
+                <% }) %>
+
+            </div>
+
         </div>
     </main>
 
@@ -132,5 +162,4 @@
     </script>
 
 </body>
-
 </html>

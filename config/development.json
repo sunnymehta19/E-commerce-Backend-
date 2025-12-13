@@ -1,0 +1,5 @@
+{
+  "MONGODB_URI": "mongodb://127.0.0.1:27017/bagVerse",
+  "JWT_KEY": "dev_jwt_secret",
+  "SESSION_SECRET": "dev_session_secret"
+}

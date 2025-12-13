@@ -1,0 +1,6 @@
+{
+  "MONGODB_URI": "",
+  "JWT_KEY": "",
+  "SESSION_SECRET": ""
+
+}

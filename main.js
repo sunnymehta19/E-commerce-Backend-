@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,7 +18,7 @@ const cartRouter = require("./routes/cartRouter");
 const index = require("./routes/index");
 const adminRoutes = require("./routes/adminRoutes");
 
-require("dotenv").config()
+
 
 const db = require("./config/mongooseConnection")
 

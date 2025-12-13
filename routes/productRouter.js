@@ -67,10 +67,18 @@ router.get("/edit/:id", isOwner, async (req, res) => {
 // HANDLE EDIT PRODUCT
 router.post("/edit/:id", isOwner, async (req, res) => {
     try {
-        console.log("EDIT ID:", req.params.id);
-        console.log("EDIT BODY:", req.body);
+        const name = req.body.name;
 
-        const { name, price, discount, bgcolor, panelcolor, textcolor } = req.body;
+        const price = Number(req.body.price.replace(/,/g, ""));
+        const discount = Number(req.body.discount.replace(/,/g, ""));
+
+        const bgcolor = req.body.bgcolor;
+        const panelcolor = req.body.panelcolor;
+        const textcolor = req.body.textcolor;
+
+        if (isNaN(price) || isNaN(discount)) {
+            return res.status(400).send("Invalid price or discount format");
+        }
 
         await productModel.findByIdAndUpdate(
             req.params.id,
@@ -82,17 +90,18 @@ router.post("/edit/:id", isOwner, async (req, res) => {
                 panelcolor,
                 textcolor
             },
-            { new: true, runValidators: true }
+            { new: true }
         );
 
         req.flash("success", "Product Updated Successfully!");
         return res.redirect("/product/all");
 
     } catch (err) {
-        console.error("EDIT PRODUCT ERROR FULL:", err);
-        return res.status(500).send(err.message);
+        console.error("EDIT PRODUCT ERROR:", err.message);
+        return res.status(500).send("Something went wrong while updating product");
     }
 });
+
 
 
 

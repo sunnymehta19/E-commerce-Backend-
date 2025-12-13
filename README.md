@@ -55,6 +55,6 @@ It includes **user authentication, admin panel, product management, cart, orders
 
 ---
 ### Author
-**Sunny Mehta**
+**Sunny Mehta,**
 *Full Stack Developer*
 

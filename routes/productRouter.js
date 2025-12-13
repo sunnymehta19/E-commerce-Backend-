@@ -4,6 +4,15 @@ const upload = require("../config/multerConfig");
 const productModel = require("../models/productModel");
 const isOwner = require("../middlewares/isOwner");
 
+
+router.get("/create", isOwner, (req, res) => {
+    res.render("createProduct", {
+        success: req.flash("success"),
+        error: req.flash("error")
+    });
+});
+
+
 router.post("/create", isOwner, upload.single("avatar"), async (req, res) => {
     try {
         let {name, price, discount, bgcolor, panelcolor, textcolor} = req.body;
